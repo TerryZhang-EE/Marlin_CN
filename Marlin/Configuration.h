@@ -27,67 +27,107 @@
  * Basic settings such as:
  * 基本设置如下:
  * - Type of electronics
- * - 电子产品类型
+ * - 电器元件电路配置：
+ * - 意指世界各地某些厂商开发的板卡上的参数，例如对应芯片输出输入管脚定义，高低电平，信号功能等
  * - Type of temperature sensor
- * - 温度传感器的类型
+ * - 温度传感器的类型 温度传感器是一种将温度变量转换为可传送的标准化输出信号的传感器。
+ * - 常用分为热电偶与热电阻，这里常用于热床和挤出头温度监测，不达到热度主程序不启动。
  * - Printer geometry
+ * - 打印成品最大体积尺寸，（常态设置长宽高行程）
  * - Endstop configuration
+ * - 限位开关设置 常态设置为X,Y,Z轴最小起点，
+ * - 也可以根据结构不同设置成最大终点。Min X,Y,Z 和 Max X,Y,Z.
  * - LCD controller
+ * - LCD 显示屏的控制 
+ * - marlin标配单色点阵显示器有1602,和12864，还有3.5寸彩屏，4寸彩屏等内置库
+ * - 12864液晶屏用的比较多。顾名思义，12864表示其横向可以显示128个点，纵向可以显示64个点。
+ * - 我们常用的12864液晶模块中有带字库的，也有不带字库的，其控制芯片也有很多种，如KS0108、T6963C，ST7920等等。）
  * - Extra features
+ * - 额外功能 （例如：断电续打、打完关机、断料检测、热床调平、WiFi远程传文件、远程管理等。
+ * - 酷炫的还有自制时候安装一些灯，当然这些都可以通过定义管脚编程实现自动化开关亮度调节）
  *
  * Advanced settings can be found in Configuration_adv.h
+ * 高级设置可以在Configuration_adv.h中找到
  */
-#define CONFIGURATION_H_VERSION 02010200
+#define CONFIGURATION_H_VERSION 02010200  //定义当前配置文件版本是marlin 2.0.9.2版
 
 //===========================================================================
 //============================= Getting Started =============================
+//============================= 入门指南 ====================================
 //===========================================================================
 
 /**
  * Here are some useful links to help get your machine configured and calibrated:
+ * 这给你几个链接，可能对于你调配机器有所帮助：调制和校准
  *
  * Example Configs:     https://github.com/MarlinFirmware/Configurations/branches/all
+ * 配置案例大样链接
  *
  * Průša Calculator:    https://blog.prusaprinters.org/calculator_3416/
+ * 在线计算器链接，很有帮助，调配计算很多参数，
+ * 比如常见的电机转数角度步数对应几何长度计算，各种类型耗材（PLA,ABS）线长和重量以及造价计算的对应关系。
+ * Filament 耗材   Stepper Motors 步进电机  Acceleration 最大加速度
  *
  * Calibration Guides:  https://reprap.org/wiki/Calibration
  *                      https://reprap.org/wiki/Triffid_Hunter%27s_Calibration_Guide
  *                      https://sites.google.com/site/repraplogphase/calibration-of-your-reprap
  *                      https://youtu.be/wAL9d7FgInk
+ * 调校指南
  *
  * Calibration Objects: https://www.thingiverse.com/thing:5573
  *                      https://www.thingiverse.com/thing:1278865
+ * 调校可用到的打印物体文件
  */
 
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(none, default config)" // Who made the changes.
-//#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
+//在引导和M115期间，将此版本的作者信息打印到主机
+
+#define STRING_CONFIG_H_AUTHOR "(none, default config)" // Who made the changes.谁做的改动。
+
+//#define CUSTOM_VERSION_FILE Version.h 
+// Path from the root directory (no quotes)
+//根目录的路径(不带引号)
 
 /**
  * *** VENDORS PLEASE READ ***
+ * *** 供应商请参阅 ***
  *
  * Marlin allows you to add a custom boot image for Graphical LCDs.
  * With this option Marlin will first show your custom screen followed
  * by the standard Marlin logo with version number and web URL.
+ * Marlin允许您为图形lcd添加自定义启动映像。
+ * 有了这个选项，Marlin将首先显示您的自定义屏幕，
+ * 然后是带有版本号和web URL的标准Marlin标志。
  *
  * We encourage you to take advantage of this new feature and we also
  * respectfully request that you retain the unmodified Marlin boot screen.
+ * 我们鼓励您充分利用这个新功能，同时也请您保留未经修改的Marlin启动屏幕。
  */
 
 // Show the Marlin bootscreen on startup. ** ENABLE FOR PRODUCTION **
+//在启动时显示马林引导屏幕。**启用生产**
+//定义 点亮启动屏幕，如果注释掉这行的话开机就不会显示开机初始画面，直接进入主界面。
 #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
+//在启动时显示Marlin/_Bootscreen.h中的位图。 
+//启动时显示的位图（开机画面）在 Marlin/_ Bootsscreen . h文件中
 //#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
+//在状态屏幕上显示Marlin/_Statusscreen.h中的位图。
+//显示位图屏幕状态文件在Marlin/_Statusscreen.h下
+//定义 屏幕待机状态，如果注释掉这行的话就不会显示待机状态，直接运行下一步程序
 //#define CUSTOM_STATUS_SCREEN_IMAGE
 
+
 // @section machine
+//@部分机器（机器选择）
 
 // Choose the name from boards.h that matches your setup
+//从boards.h中选择与您的设置相匹配的名称
 #ifndef MOTHERBOARD
   #define MOTHERBOARD BOARD_RAMPS_14_EFB
 #endif
@@ -96,47 +136,71 @@
  * Select the serial port on the board to use for communication with the host.
  * This allows the connection of wireless adapters (for instance) to non-default port pins.
  * Serial port -1 is the USB emulated serial port, if available.
+ * 选择单板上用于与主机通信的串口。 
+ * 这允许无线适配器(例如)连接到非默认端口引脚。 
+ * 串口-1是USB仿真串口，如果有的话。
+ * 
  * Note: The first serial port (-1 or 0) will always be used by the Arduino bootloader.
+ * 注意:第一个串口(-1或0)将始终由Arduino引导加载程序使用。
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT 0
+#define SERIAL_PORT 0 //串行端口
 
 /**
  * Serial Port Baud Rate
+ * 串口波特率
+ * 
  * This is the default communication speed for all serial ports.
  * Set the baud rate defaults for additional serial ports below.
+ * 所有串口的默认通信速率。为下面的其他串口设置默认波特率。
  *
  * 250000 works in most cases, but you might try a lower speed if
  * you commonly experience drop-outs during host printing.
  * You may try up to 1000000 to speed up SD file transfer.
+ * 250000在大多数情况下可以工作，但如果在主机打印期间经常遇到掉线，
+ * 则可以尝试较低的速度。您可以尝试高达1000000加速SD文件传输。
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 250000
+#define BAUDRATE 250000 //串口波特率
 
-//#define BAUD_RATE_GCODE     // Enable G-code M575 to set the baud rate
+//#define BAUD_RATE_GCODE     
+// Enable G-code M575 to set the baud rate
+//比特率改变可用M575命令，在做上位机时不通过改变固件即可更改。 可自行修改设置比特率
 
 /**
  * Select a secondary serial port on the board to use for communication with the host.
  * Currently Ethernet (-2) is only supported on Teensy 4.1 boards.
+ * 选择单板上用于与主机通信的备用串口。 目前只有tenensy 4.1板支持以太网(-2)。
  * :[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-//#define SERIAL_PORT_2 -1
-//#define BAUDRATE_2 250000   // :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE
+//#define SERIAL_PORT_2 -1 //串行端口2
+//#define BAUDRATE_2 250000   
+// :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE
+//使能覆盖BAUDRATE
 
 /**
  * Select a third serial port on the board to use for communication with the host.
  * Currently only supported for AVR, DUE, LPC1768/9 and STM32/STM32F1
+ * 选择该单板上用于与主机通信的第三个串口。
+ * 目前只支持AVR, DUE, LPC1768/9和STM32/STM32F1
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
 //#define SERIAL_PORT_3 1
-//#define BAUDRATE_3 250000   // :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE
+//#define BAUDRATE_3 250000   
+// :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE
+//使能覆盖BAUDRATE
+
 
 // Enable the Bluetooth serial interface on AT90USB devices
+//开启AT90USB设备的蓝牙串行接口
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
+// LCD Ready信息和Info菜单中显示的名称
+//液晶屏“就绪待机等待”信息 和信息菜单中显示的名称
+//定义运行显示自定义名称“3D打印机”，名称可更改，取消注释即可运行显示。
 //#define CUSTOM_MACHINE_NAME "3D Printer"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
