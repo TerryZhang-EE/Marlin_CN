@@ -27,7 +27,9 @@
  * Basic settings such as:
  * 基本设置如下:
  * - Type of electronics
+ * - 电子产品类型
  * - Type of temperature sensor
+ * - 温度传感器的类型
  * - Printer geometry
  * - Endstop configuration
  * - LCD controller
