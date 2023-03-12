@@ -203,28 +203,40 @@
 //定义运行显示自定义名称“3D打印机”，名称可更改，取消注释即可运行显示。
 //#define CUSTOM_MACHINE_NAME "3D Printer"
 
+//定义运行显示自定义名称“3D打印机”，名称可更改，取消注释即可运行显示。
 // Printer's unique ID, used by some programs to differentiate between machines.
+//这个链接是一个不错的机器串号在线生成器
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
+//名称由上述链接在线串号生成器提供可更改，取消注释即可运行嵌入
 //#define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
 
 // @section stepper drivers
 
 /**
  * Stepper Drivers
+ * 步进电机驱动
  *
  * These settings allow Marlin to tune stepper driver timing and enable advanced options for
  * stepper drivers that support them. You may also override timing options in Configuration_adv.h.
+ * 这些设置允许马林调整步进驱动器的时间，
+ * 并启用支持他们的步进驱动器的高级选项。
+ * 你也可以覆盖Configuration_adv.h中的计时选项。
  *
  * Use TMC2208/TMC2208_STANDALONE for TMC2225 drivers and TMC2209/TMC2209_STANDALONE for TMC2226 drivers.
+ * 驱动支持列表
+ * 
+ * 
  *
  * Options: A4988, A5984, DRV8825, LV8729, TB6560, TB6600, TMC2100,
  *          TMC2130, TMC2130_STANDALONE, TMC2160, TMC2160_STANDALONE,
  *          TMC2208, TMC2208_STANDALONE, TMC2209, TMC2209_STANDALONE,
  *          TMC26X,  TMC26X_STANDALONE,  TMC2660, TMC2660_STANDALONE,
  *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
+ * 选项
+ * 
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#define X_DRIVER_TYPE  A4988
+#define X_DRIVER_TYPE  A4988 //X轴驱动类型定义
 #define Y_DRIVER_TYPE  A4988
 #define Z_DRIVER_TYPE  A4988
 //#define X2_DRIVER_TYPE A4988
@@ -238,7 +250,7 @@
 //#define U_DRIVER_TYPE  A4988
 //#define V_DRIVER_TYPE  A4988
 //#define W_DRIVER_TYPE  A4988
-#define E0_DRIVER_TYPE A4988
+#define E0_DRIVER_TYPE A4988 //未知哪个设备的
 //#define E1_DRIVER_TYPE A4988
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
@@ -249,21 +261,38 @@
 
 /**
  * Additional Axis Settings
+ * 附加轴设置
  *
  * Define AXISn_ROTATES for all axes that rotate or pivot.
  * Rotational axis coordinates are expressed in degrees.
+ * 为所有旋转或枢轴的轴定义axisn_spins 
+ * 旋转轴坐标用度数表示。
  *
  * AXISn_NAME defines the letter used to refer to the axis in (most) G-code commands.
+ * AXISn_NAME定义了(大多数)G-code命令中用于指代轴的字母。
+ * 
  * By convention the names and roles are typically:
+ * 按照惯例，名字和角色通常是:
  *   'A' : Rotational axis parallel to X
  *   'B' : Rotational axis parallel to Y
  *   'C' : Rotational axis parallel to Z
  *   'U' : Secondary linear axis parallel to X
  *   'V' : Secondary linear axis parallel to Y
  *   'W' : Secondary linear axis parallel to Z
+ *   'A'代表平行于X轴面旋转的轴
+ *   'B'代表平行于Y轴面旋转的轴
+ *   'C'代表平行于Z轴面旋转的轴
+ *   'U'代表平行于X的次级线性轴
+ *   'V'代表平行于Y的次级线性轴
+ *   'W'代表平行于Z的次级线性轴
  *
  * Regardless of these settings the axes are internally named I, J, K, U, V, W.
+ * 无论设置如何，固件内部轴标识为
+ * I (AXIS4), J (AXIS5), K (AXIS6).
+ * U (AXIS7), V (AXIS8), W (AXIS9)
  */
+
+ /* 定义默认运行主线性轴A ，没有A轴语句前加注释符,//注释掉即可关闭。 */
 #ifdef I_DRIVER_TYPE
   #define AXIS4_NAME 'A' // :['A', 'B', 'C', 'U', 'V', 'W']
   #define AXIS4_ROTATES
@@ -290,29 +319,42 @@
 #endif
 
 // @section extruder
+// @挤出机部分（喷头）
 
 // This defines the number of extruders
+//这定义了挤出机（喷头）的数量
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
-#define EXTRUDERS 1
+#define EXTRUDERS 1 //挤出机（喷头）
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
+//一般期望线丝直径(1.75,2.85,3.0，…)用于体积、丝宽传感器等。
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
-//#define SINGLENOZZLE
+//对于非分体式挤出机。多合一，例如2进1出，3进1出，多进一出等共用单个喷嘴的挤出机。
+//#define SINGLENOZZLE //定义默认保留单喷嘴运行
 
 // Save and restore temperature and fan speed on tool-change.
 // Set standby for the unselected tool with M104/106/109 T...
-#if ENABLED(SINGLENOZZLE)
+//保存并恢复换刀时的温度和风扇转速。
+//使用M104/106/109 T将未选中的工具设置为待机…
+
+#if ENABLED(SINGLENOZZLE)//定义 单喷嘴 开关
   //#define SINGLENOZZLE_STANDBY_TEMP
+  //定义 开启提升 单喷嘴_待机_温度 具体值见函数解释，一般为G代码
   //#define SINGLENOZZLE_STANDBY_FAN
+  //定义 开启提升 单喷嘴散热风扇_待机_温度 具体值见函数解释，一般为G代码
 #endif
 
 // @section multi-material
+// @混合材料部分
 
 /**
  * Multi-Material Unit
+ * 多材料单位组合
+ * 
  * Set to one of these predefined models:
+ * 设置为以下预定义模型之一:
  *
  *   PRUSA_MMU1           : Průša MMU1 (The "multiplexer" version)
  *   PRUSA_MMU2           : Průša MMU2
